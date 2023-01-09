@@ -1,0 +1,4 @@
+<button mat-icon-button (click)="onToggle()" class="text-gray-50 dark:text-yellow-300 transition-colors">
+  <mat-icon *ngIf="!(themeService.isDarkTheme$ | async)" aria-hidden="false" aria-label="Dark mode icon" fontIcon="dark_mode"></mat-icon>
+  <mat-icon *ngIf="themeService.isDarkTheme$ | async" aria-hidden="false" aria-label="Light mode icon" fontIcon="light_mode"></mat-icon>
+</button>

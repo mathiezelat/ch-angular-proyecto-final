@@ -1,0 +1,56 @@
+<mat-sidenav-container>
+  <mat-sidenav
+    #sidenav
+    mode="over"
+    [fixedInViewport]="true"
+    class="py-2 px-4 shadow-lg bg-white dark:bg-gray-800 text-white w-4/6 md:w-2/6 lg:w-1/6"
+  >
+    <div class="flex flex-col gap-4">
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="icon-button with menu icon"
+        (click)="sidenav.close()"
+      >
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Close icon"
+          fontIcon="close"
+          class="text-primary dark:text-gray-400"
+        ></mat-icon>
+      </button>
+
+      <ul class="flex flex-col py-2 gap-2">
+        <li>
+          <a
+            mat-button
+            color="primary"
+            routerLink="students"
+            (click)="sidenav.close()"
+            class="dark:text-gray-400"
+          >
+            Lista de alumnos
+          </a>
+        </li>
+        <li>
+          <a
+            mat-button
+            color="primary"
+            routerLink="courses"
+            (click)="sidenav.close()"
+            class="dark:text-gray-400"
+          >
+            Lista de cursos
+          </a>
+        </li>
+      </ul>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <app-header [sidenav]="sidenav"></app-header>
+    <app-page-wrapper>
+      <router-outlet></router-outlet>
+    </app-page-wrapper>
+  </mat-sidenav-content>
+</mat-sidenav-container>
