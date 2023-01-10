@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Student } from '../../models/student.model';
-import { StudentDialogComponent } from '../../shared/components/student-dialog/student-dialog.component';
-import { StudentsService } from '../../shared/services/students.service';
+import { StudentDialogComponent } from '../../components/student-dialog/student-dialog.component';
+import { StudentsService } from '../../services/students.service';
+import { Student } from './../../../../core/models/student.model';
 
 @Component({
   selector: 'app-students-page',

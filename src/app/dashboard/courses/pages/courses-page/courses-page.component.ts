@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CoursesService } from '../../shared/services/courses.service';
-import { Course } from '../../models/course.model';
-import { CourseDialogComponent } from '../../shared/components/course-dialog/course-dialog.component';
+import { CoursesService } from '../../services/courses.service';
+import { Course } from '../../../../core/models';
+import { CourseDialogComponent } from '../../components/course-dialog/course-dialog.component';
 
 @Component({
   selector: 'app-courses-page',

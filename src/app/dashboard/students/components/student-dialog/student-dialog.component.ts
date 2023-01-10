@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Student } from '../../../models/student.model';
+import { Student } from '../../../../core/models';
 
 @Component({
   selector: 'app-student-dialog',
   templateUrl: './student-dialog.component.html',
 })
-export class StudentDialogComponent  {
+export class StudentDialogComponent {
   public isEdit: boolean = false;
   public title: string = '';
 
