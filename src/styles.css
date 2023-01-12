@@ -9,3 +9,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 *, ::before, ::after {
   border: none;
 }
+
+.mat-mdc-select-value {
+  color: inherit;
+}
+
+.mdc-list-item__primary-text {
+  color: inherit;
+}
+
+.mdc-menu-surface.mat-mdc-select-panel {
+  padding: 0 !important;
+}

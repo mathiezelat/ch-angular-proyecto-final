@@ -1,0 +1,52 @@
+<div class="min-h-screen bg-gray-900 flex justify-center items-center">
+  <div class="container mx-auto flex justify-center">
+    <mat-card class="w-80 h-80 bg-gray-800 overflow-hidden">
+      <mat-card-header class="pb-4 mb-6 bg-primary">
+        <mat-card-title class="text-gray-100">
+          Inicio de sesión
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form class="flex flex-col" [formGroup]="loginForm">
+          <div class="mb-2">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-gray-400">Correo electrónico</mat-label>
+              <input
+                [formControl]="emailControl"
+                matInput
+                class="text-gray-400 placeholder:text-gray-500"
+              />
+              <mat-error *ngIf="emailControl.getError('required')">
+                Correo electrónico es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label class="text-gray-400">Contraseña</mat-label>
+              <input
+                [formControl]="passwordControl"
+                type="password"
+                matInput
+                class="text-gray-400 placeholder:text-gray-500"
+              />
+              <mat-error *ngIf="passwordControl.getError('required')">
+                Contraseña es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+      <mat-card-actions class="flex justify-center">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="login()"
+          class="w-full mx-2"
+        >
+          Iniciar sesión
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

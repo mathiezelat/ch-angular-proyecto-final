@@ -13,12 +13,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   exports: [
     MatButtonModule,
     MatIconModule,
@@ -32,6 +33,9 @@ import { MatSortModule } from '@angular/material/sort';
     MatCheckboxModule,
     MatDatepickerModule,
     MatSlideToggleModule,
+    MatCardModule,
+    MatSelectModule,
+    MatMenuModule,
   ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

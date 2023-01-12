@@ -24,6 +24,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'inscriptions',
+        loadChildren: () =>
+          import('./inscriptions/inscriptions.module').then(
+            (module) => module.InscriptionsModule
+          ),
+      },
+      {
         path: '**',
         redirectTo: 'students',
       },
