@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, find, map } from 'rxjs';
 import { Inscription } from '../../../core/models/inscription.model';
 import { environment } from './../../../../environments/environment';
 
@@ -21,6 +21,15 @@ export class InscriptionsService {
     this.http.get<Inscription[]>(this.apiURL).subscribe((inscriptions) => {
       this.inscriptions.next(inscriptions);
     });
+  }
+
+  getInscription(id: string) {
+    return this.inscriptions.pipe(
+      map((inscriptions) =>
+        inscriptions.find((inscription) => id === inscription.id)
+      ),
+      filter((inscription) => !!inscription)
+    );
   }
 
   addInscription(newInscription: Inscription) {
