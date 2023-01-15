@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Inscription } from '../../../core/models/inscription.model';
+import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,33 +11,51 @@ export class InscriptionsService {
   private inscriptions = new BehaviorSubject<Inscription[]>([]);
   public inscriptions$ = this.inscriptions.asObservable();
 
-  constructor() {}
+  private apiURL = `${environment.apiUrl2}/inscriptions`;
+
+  constructor(private readonly http: HttpClient) {
+    this.getInscriptions();
+  }
+
+  getInscriptions() {
+    this.http.get<Inscription[]>(this.apiURL).subscribe((inscriptions) => {
+      this.inscriptions.next(inscriptions);
+    });
+  }
 
   addInscription(newInscription: Inscription) {
-    const lastId =
-      this.inscriptions.value[this.inscriptions.value.length - 1]?.id || 0;
-
-    newInscription.id = lastId + 1;
-
-    this.inscriptions.next([...this.inscriptions.value, newInscription]);
+    this.http
+      .post<Inscription>(this.apiURL, newInscription)
+      .subscribe((inscription) => {
+        this.inscriptions.next([...this.inscriptions.value, inscription]);
+      });
   }
 
-  editInscription(id: number, editInscription: Inscription) {
-    const editedInscription = this.inscriptions.value.map((inscription) => {
-      if (id === inscription.id) {
-        return { ...inscription, ...editInscription };
-      }
-      return inscription;
+  editInscription(id: string, editInscription: Inscription) {
+    this.http
+      .put<Inscription>(`${this.apiURL}/${id}`, editInscription)
+      .subscribe((editedInscription) => {
+        const editedInscriptions = this.inscriptions.value.map(
+          (inscription) => {
+            if (editedInscription.id === inscription.id) {
+              return editedInscription;
+            }
+
+            return inscription;
+          }
+        );
+
+        this.inscriptions.next(editedInscriptions);
+      });
+  }
+
+  deleteInscription(id: string) {
+    this.http.delete(`${this.apiURL}/${id}`).subscribe(() => {
+      const deletedInscriptions = this.inscriptions.value.filter(
+        (inscription) => id !== inscription.id
+      );
+
+      this.inscriptions.next(deletedInscriptions);
     });
-
-    this.inscriptions.next(editedInscription);
-  }
-
-  deleteInscription(id: number) {
-    const deletedInscription = this.inscriptions.value.filter(
-      (inscription) => inscription.id !== id
-    );
-
-    this.inscriptions.next(deletedInscription);
   }
 }

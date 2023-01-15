@@ -1,11 +1,24 @@
 <header>
   <mat-toolbar color="primary" class="flex justify-between">
     <div class="flex items-center">
-      <button (click)="sidenav.open()" mat-icon-button aria-label="Example icon-button with menu icon">
-        <mat-icon aria-hidden="false" aria-label="Light mode icon" fontIcon="menu"></mat-icon>
+      <button (click)="sidenav.open()" mat-icon-button aria-label="menu icon">
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Light mode icon"
+          fontIcon="menu"
+        ></mat-icon>
       </button>
       <span>Cursos<span class="font-semibold">App</span></span>
     </div>
-    <app-theme-toggle></app-theme-toggle>
+    <div>
+      <button (click)="logout()" mat-icon-button aria-label="logout icon">
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Logout icon"
+          fontIcon="logout"
+        ></mat-icon>
+      </button>
+      <app-theme-toggle></app-theme-toggle>
+    </div>
   </mat-toolbar>
 </header>

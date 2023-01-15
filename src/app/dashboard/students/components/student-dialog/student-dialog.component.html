@@ -58,30 +58,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="mb-2">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label class="dark:text-gray-400">Nota</mat-label>
-        <input
-          type="number"
-          [formControl]="noteControl"
-          matInput
-          placeholder="Ex. 0"
-          class="dark:text-gray-400 dark:placeholder:text-gray-500"
-        />
-        <mat-error *ngIf="noteControl.getError('required')">
-          Nota es requerido
-        </mat-error>
-        <mat-error *ngIf="noteControl.getError('pattern')">
-          Nota tiene que ser un valor númerico
-        </mat-error>
-        <mat-error *ngIf="noteControl.getError('min')">
-          Nota tiene que ser mayor o igual a 0
-        </mat-error>
-        <mat-error *ngIf="noteControl.getError('max')">
-          Nota tiene que ser menor o igual a 10
-        </mat-error>
-      </mat-form-field>
-    </div>
     <div *ngIf="isEdit">
       <mat-checkbox [formControl]="isActiveControl" color="primary">
         ¿Está activo?

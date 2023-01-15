@@ -45,7 +45,7 @@ export class InscriptionsPageComponent {
     });
   }
 
-  deleteInscription(id: number) {
+  deleteInscription(id: string) {
     this.inscriptionsService.deleteInscription(id);
   }
 }

@@ -8,15 +8,12 @@ import { Student } from './../../../../core/models/student.model';
   selector: 'app-students-page',
   templateUrl: './students-page.component.html',
 })
-export class StudentsPageComponent implements OnInit {
-  public students: Student[] = [];
-
+export class StudentsPageComponent {
   displayedColumns = [
     'id',
     'firstName',
     'lastName',
     'dni',
-    'note',
     'isActive',
     'edit',
     'delete',
@@ -24,16 +21,8 @@ export class StudentsPageComponent implements OnInit {
 
   constructor(
     private readonly dialogService: MatDialog,
-    private readonly studentsService: StudentsService
+    public readonly studentsService: StudentsService
   ) {}
-
-  ngOnInit(): void {
-    this.getStudents();
-  }
-
-  getStudents() {
-    this.students = this.studentsService.getStudents();
-  }
 
   addStudent() {
     const dialog = this.dialogService.open(StudentDialogComponent, {
@@ -45,8 +34,6 @@ export class StudentsPageComponent implements OnInit {
     dialog.afterClosed().subscribe((value) => {
       if (value) {
         this.studentsService.addStudent(value);
-
-        this.getStudents();
       }
     });
   }
@@ -62,15 +49,11 @@ export class StudentsPageComponent implements OnInit {
     dialog.afterClosed().subscribe((data) => {
       if (data) {
         this.studentsService.editStudent(student.id, data);
-
-        this.getStudents();
       }
     });
   }
 
   removeStudent(student: Student) {
-    this.studentsService.removeStudent(student.id);
-
-    this.getStudents();
+    this.studentsService.deleteStudent(student.id);
   }
 }

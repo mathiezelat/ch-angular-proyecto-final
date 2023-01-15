@@ -29,7 +29,7 @@
         <mat-label>Estudiantes</mat-label>
         <mat-select [formControl]="studentsControl" multiple>
           <mat-option
-            *ngFor="let student of this.studentsService.getStudents()"
+            *ngFor="let student of this.studentsService.students$ | async"
             [value]="student"
           >
             {{ student.firstName }}

@@ -19,7 +19,6 @@ export class CoursesPageComponent {
     'title',
     'category',
     'duration',
-    'schedules',
     'price',
     'edit',
     'delete',
@@ -50,7 +49,7 @@ export class CoursesPageComponent {
     });
   }
 
-  deleteCourse(id: number) {
+  deleteCourse(id: string) {
     this.coursesService.deleteCourse(id);
   }
 }

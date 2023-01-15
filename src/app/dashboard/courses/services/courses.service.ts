@@ -1,61 +1,60 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Course } from '../../../core/models';
+import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService {
-  private courses = new BehaviorSubject<Course[]>([
-    new Course(
-      1,
-      'Angular',
-      'Programación',
-      '9 semanas',
-      'Lunes y Miércoles de 20:30 a 22:30',
-      35000
-    ),
-    new Course(
-      2,
-      'TypeScript',
-      'Programación',
-      '6 semanas',
-      'Martes y Jueves de 20:30 a 22:30',
-      20000
-    ),
-  ]);
+  private courses = new BehaviorSubject<Course[]>([]);
   public courses$ = this.courses.asObservable();
 
-  constructor() {}
+  private apiURL = `${environment.apiUrl1}/courses`;
 
-  getCourse(id: number) {
+  constructor(private readonly http: HttpClient) {
+    this.getCourses();
+  }
+
+  getCourse(id: string) {
     return this.courses.value.find((course) => course.id === id);
   }
 
-  addCourse(newCourse: Course) {
-    const lastId = this.courses.value[this.courses.value.length - 1]?.id || 0;
-
-    newCourse.id = lastId + 1;
-
-    this.courses.next([...this.courses.value, newCourse]);
-  }
-
-  editCourse(id: number, editCourse: Course) {
-    const editedCourse = this.courses.value.map((course) => {
-      if (id === course.id) {
-        return { ...course, ...editCourse };
-      }
-      return course;
+  getCourses() {
+    this.http.get<Course[]>(this.apiURL).subscribe((courses) => {
+      this.courses.next(courses);
     });
-
-    this.courses.next(editedCourse);
   }
 
-  deleteCourse(id: number) {
-    const deletedCourse = this.courses.value.filter(
-      (course) => course.id !== id
-    );
+  addCourse(newCourse: Course) {
+    this.http.post<Course>(this.apiURL, newCourse).subscribe((course) => {
+      this.courses.next([...this.courses.value, course]);
+    });
+  }
 
-    this.courses.next(deletedCourse);
+  editCourse(id: string, editCourse: Course) {
+    this.http
+      .put<Course>(`${this.apiURL}/${id}`, editCourse)
+      .subscribe((editedCourse) => {
+        const editedCourses = this.courses.value.map((course) => {
+          if (id === course.id) {
+            return editedCourse;
+          }
+          return course;
+        });
+
+        this.courses.next(editedCourses);
+      });
+  }
+
+  deleteCourse(id: string) {
+    this.http.delete(`${this.apiURL}/${id}`).subscribe(() => {
+      const deletedCourses = this.courses.value.filter(
+        (course) => course.id !== id
+      );
+
+      this.courses.next(deletedCourses);
+    });
   }
 }

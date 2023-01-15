@@ -14,7 +14,6 @@ export class CourseDialogComponent {
   titleControl = new FormControl('', [Validators.required]);
   categoryControl = new FormControl('', [Validators.required]);
   durationControl = new FormControl('', [Validators.required]);
-  schedulesControl = new FormControl('', [Validators.required]);
   priceControl = new FormControl(NaN, [
     Validators.required,
     Validators.pattern('^[0-9]*$'),
@@ -25,7 +24,6 @@ export class CourseDialogComponent {
     title: this.titleControl,
     category: this.categoryControl,
     duration: this.durationControl,
-    schedules: this.schedulesControl,
     price: this.priceControl,
   });
 

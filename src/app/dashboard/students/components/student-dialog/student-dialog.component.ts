@@ -23,19 +23,12 @@ export class StudentDialogComponent {
     Validators.required,
     Validators.pattern('^[0-9]*$'),
   ]);
-  noteControl = new FormControl(NaN, [
-    Validators.required,
-    Validators.pattern('^[0-9]*.[0-9]*$'),
-    Validators.min(0),
-    Validators.max(10),
-  ]);
   isActiveControl = new FormControl(true);
 
   studentForm = new FormGroup({
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
     dni: this.dniControl,
-    note: this.noteControl,
     isActive: this.isActiveControl,
   });
 
