@@ -1,8 +1,11 @@
-<div class="min-h-screen bg-gray-900 flex justify-center items-center">
+<div
+  class="bg-primary absolute top-0 left-0 h-screen w-screen overflow-hidden object-cover"
+></div>
+<div class="min-h-screen bg-gray-100 flex justify-center items-center">
   <div class="container mx-auto flex justify-center">
-    <mat-card class="w-80 h-80 bg-gray-800 overflow-hidden">
-      <mat-card-header class="pb-4 mb-6 bg-primary">
-        <mat-card-title class="text-gray-100">
+    <mat-card class="w-80 h-80 overflow-hidden">
+      <mat-card-header class="pb-4 mb-6 bg-gray-50 flex justify-center">
+        <mat-card-title class="text-gray-700 font-normal">
           Inicio de sesión
         </mat-card-title>
       </mat-card-header>
@@ -10,12 +13,8 @@
         <form class="flex flex-col" [formGroup]="loginForm">
           <div class="mb-2">
             <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="text-gray-400">Correo electrónico</mat-label>
-              <input
-                [formControl]="emailControl"
-                matInput
-                class="text-gray-400 placeholder:text-gray-500"
-              />
+              <mat-label>Correo electrónico</mat-label>
+              <input [formControl]="emailControl" matInput />
               <mat-error *ngIf="emailControl.getError('required')">
                 Correo electrónico es requerido
               </mat-error>
@@ -23,13 +22,8 @@
           </div>
           <div>
             <mat-form-field appearance="outline" class="w-full">
-              <mat-label class="text-gray-400">Contraseña</mat-label>
-              <input
-                [formControl]="passwordControl"
-                type="password"
-                matInput
-                class="text-gray-400 placeholder:text-gray-500"
-              />
+              <mat-label>Contraseña</mat-label>
+              <input [formControl]="passwordControl" type="password" matInput />
               <mat-error *ngIf="passwordControl.getError('required')">
                 Contraseña es requerido
               </mat-error>
