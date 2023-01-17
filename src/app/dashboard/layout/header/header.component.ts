@@ -11,13 +11,10 @@ export class HeaderComponent {
   @Input() sidenav!: MatSidenav;
 
   constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly authService: AuthService
   ) {}
 
   logout() {
     this.authService.logout();
-
-    this.router.navigate(['/auth/login']);
   }
 }

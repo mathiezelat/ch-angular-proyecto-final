@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, mergeMap, tap } from 'rxjs';
+import { BehaviorSubject, map, mergeMap, Observable, tap } from 'rxjs';
 import { User } from '../../core/models/user';
+import { Router } from '@angular/router';
 import {
   SingleUserResponse,
   LoginSuccessful,
@@ -17,9 +18,12 @@ export class AuthService {
   private profile = new BehaviorSubject<User | null>(null);
   public profile$ = this.profile.asObservable();
 
-  private apiUrl = 'https://reqres.in/api';
+  public apiUrl = 'https://reqres.in/api';
 
-  constructor(private readonly http: HttpClient) {
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router
+  ) {
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -45,32 +49,28 @@ export class AuthService {
     }
   }
 
-  login(data: { email: string; password: string }) {
-    this.http
-      .post<LoginSuccessful>(`${this.apiUrl}/login`, data)
-      .pipe(
-        tap(({ token }) => {
-          localStorage.setItem('token', token);
+  login(data: { email: string; password: string }): Observable<any> {
+    return this.http.post<LoginSuccessful>(`${this.apiUrl}/login`, data).pipe(
+      tap(({ token }) => {
+        localStorage.setItem('token', token);
 
-          this.token.next(token);
-        }),
-        mergeMap(() =>
-          this.http.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
-        ),
-        map(
-          ({ data }) =>
-            new User(
-              data.id,
-              data.email,
-              data.first_name,
-              data.last_name,
-              data.avatar
-            )
-        )
-      )
-      .subscribe((user) => {
-        this.profile.next(user);
-      });
+        this.token.next(token);
+      }),
+      mergeMap(() =>
+        this.http.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
+      ),
+      map(
+        ({ data }) =>
+          new User(
+            data.id,
+            data.email,
+            data.first_name,
+            data.last_name,
+            data.avatar
+          )
+      ),
+      tap((user) => this.profile.next(user))
+    );
   }
 
   logout() {
@@ -78,6 +78,8 @@ export class AuthService {
 
     this.token.next(null);
     this.profile.next(null);
+
+    this.router.navigate(['auth', 'login']);
   }
 
   isLogged() {

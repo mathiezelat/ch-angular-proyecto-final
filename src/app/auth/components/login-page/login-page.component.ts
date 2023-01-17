@@ -8,12 +8,15 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent {
-  emailControl = new FormControl('eve.holt@reqres.in', [Validators.required]);
-  passwordControl = new FormControl('cityslicka', [Validators.required]);
+  public loading = false;
+  public emailControl = new FormControl('eve.holt@reqres.in', [
+    Validators.required,
+  ]);
+  public passwordControl = new FormControl('cityslicka', [Validators.required]);
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    public readonly router: Router
   ) {
     this.authService.isLogged().subscribe((isLogged) => {
       if (isLogged) {
@@ -30,10 +33,18 @@ export class LoginPageComponent {
   login() {
     this.loginForm.markAllAsTouched();
     if (this.loginForm.valid) {
-      this.authService.login({
-        email: this.loginForm.get('email')?.value || '',
-        password: this.loginForm.get('password')?.value || '',
-      });
+      this.authService
+        .login({
+          email: this.loginForm.get('email')?.value || '',
+          password: this.loginForm.get('password')?.value || '',
+        })
+        .subscribe((user) => {
+          this.loading = false;
+
+          if (user) {
+            this.router.navigate(['dashboard', 'students']);
+          }
+        });
 
       this.loginForm.reset();
     }
