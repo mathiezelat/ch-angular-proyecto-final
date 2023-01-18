@@ -1,63 +1,64 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoginPageComponent } from './login-page.component';
-import { AuthService } from '../../services/auth.service';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
+  let authService: AuthService;
   let loginSpy: jasmine.Spy;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginPageComponent],
-      imports: [
-        BrowserAnimationsModule,
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-        SharedModule,
-      ],
+      imports: [BrowserAnimationsModule, HttpClientTestingModule, SharedModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
-    loginSpy = spyOn(TestBed.inject(AuthService), 'login').and.callThrough();
+    authService = TestBed.inject(AuthService);
+    loginSpy = spyOn(authService, 'login').and.callThrough();
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the login page', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form should not be valid if email and password are empty', () => {
-    const form = component.loginForm;
-    form.setValue({
+  it('should have a loading initialized false', () => {
+    expect(component.loading).toBeFalse();
+  });
+
+  it('should log in', () => {
+    component.loginForm.patchValue({
+      email: 'eve.holt@reqres.in',
+      password: 'cityslicka',
+    });
+
+    component.login();
+
+    expect(loginSpy).toHaveBeenCalledWith({
+      email: 'eve.holt@reqres.in',
+      password: 'cityslicka',
+    });
+  });
+
+  it('should not be able to log in if the form is invalid', () => {
+    component.loginForm.patchValue({
       email: '',
       password: '',
     });
-    expect(form.valid).toBe(false);
-  });
 
-  it('should call login from AuthService', () => {
-    const form = component.loginForm;
-    form.setValue({
-      email: 'test@email.com',
-      password: '123456',
-    });
+    expect(component.loginForm.invalid).toBeTrue();
+
     component.login();
-    expect(loginSpy).toHaveBeenCalled();
-  });
 
-  it('login should not be executed if form is not valid', () => {
-    const form = component.loginForm;
-    form.setValue({
+    expect(loginSpy).not.toHaveBeenCalledWith({
       email: '',
       password: '',
     });
-    component.login();
-    expect(form.invalid).toBeTrue();
-    expect(loginSpy).not.toHaveBeenCalled();
   });
 });

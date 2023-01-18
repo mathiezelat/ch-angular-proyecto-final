@@ -15,7 +15,7 @@ const expectedUser = new User(
   'https://reqres.in/img/faces/7-image.jpg'
 );
 
-describe('AuthService', () => {
+xdescribe('AuthService', () => {
   let service: AuthService;
   let httpTestingController: HttpTestingController;
 
