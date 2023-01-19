@@ -28,7 +28,8 @@ export class UsersService {
               user.email,
               user.first_name,
               user.last_name,
-              user.avatar
+              user.avatar,
+              false
             );
           });
         })

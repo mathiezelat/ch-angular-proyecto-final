@@ -15,6 +15,9 @@ export class LoginPageComponent {
   public passwordControl = new FormControl<string>('cityslicka', [
     Validators.required,
   ]);
+  public isAdminControl = new FormControl<boolean>(false, [
+    Validators.required,
+  ]);
 
   constructor(
     private readonly authService: AuthService,
@@ -24,6 +27,7 @@ export class LoginPageComponent {
   loginForm = new FormGroup({
     email: this.emailControl,
     password: this.passwordControl,
+    isAdmin: this.isAdminControl,
   });
 
   login() {
@@ -33,10 +37,13 @@ export class LoginPageComponent {
       this.loading = true;
 
       this.authService
-        .login({
-          email: this.loginForm.get('email')?.value || '',
-          password: this.loginForm.get('password')?.value || '',
-        })
+        .login(
+          {
+            email: this.loginForm.get('email')?.value || '',
+            password: this.loginForm.get('password')?.value || '',
+          },
+          this.loginForm.get('isAdmin')?.value || false
+        )
         .subscribe((user) => {
           this.loading = false;
 

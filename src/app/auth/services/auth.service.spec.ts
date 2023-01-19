@@ -13,7 +13,8 @@ const mockUser: User = new User(
   'michael.lawson@reqres.in',
   'Michael',
   'Lawson',
-  'https://reqres.in/img/faces/7-image.jpg'
+  'https://reqres.in/img/faces/7-image.jpg',
+  true
 );
 
 const mockSingleUserResponse: SingleUserResponse = {
@@ -48,10 +49,13 @@ describe('AuthService', () => {
 
   it('login should work', (done) => {
     service
-      .login({
-        email: 'fakemail@mail.com',
-        password: '123456',
-      })
+      .login(
+        {
+          email: 'fakemail@mail.com',
+          password: '123456',
+        },
+        true
+      )
       .subscribe((user) => {
         expect(user).toEqual(mockUser);
         done();

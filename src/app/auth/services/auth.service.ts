@@ -30,10 +30,14 @@ export class AuthService {
     private readonly router: Router
   ) {}
 
-  login(data: { email: string; password: string }): Observable<User> {
+  login(
+    data: { email: string; password: string },
+    isAdmin: boolean
+  ): Observable<User> {
     return this.http.post<LoginSuccessful>(`${this.apiUrl}/login`, data).pipe(
       tap(({ token }) => {
         localStorage.setItem('token', token);
+        localStorage.setItem('admin', String(isAdmin));
       }),
       mergeMap(() =>
         this.http.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
@@ -45,7 +49,8 @@ export class AuthService {
             data.email,
             data.first_name,
             data.last_name,
-            data.avatar
+            data.avatar,
+            true
           )
       ),
       tap((user) => this.user.next(user))
@@ -54,6 +59,7 @@ export class AuthService {
 
   verifyToken(): Observable<boolean> {
     const lsToken = localStorage.getItem('token');
+    const lsAdmin = localStorage.getItem('admin');
 
     return of(lsToken).pipe(
       tap((token) => {
@@ -69,7 +75,8 @@ export class AuthService {
             data.email,
             data.first_name,
             data.last_name,
-            data.avatar
+            data.avatar,
+            lsAdmin === 'true'
           )
       ),
       tap((user) => {

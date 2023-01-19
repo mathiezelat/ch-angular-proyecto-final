@@ -54,7 +54,7 @@
             Lista de inscripciones
           </a>
         </li>
-        <li>
+        <li *ngIf="user?.isAdmin">
           <a
             mat-button
             color="primary"
