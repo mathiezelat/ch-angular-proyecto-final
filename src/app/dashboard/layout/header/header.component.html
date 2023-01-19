@@ -8,10 +8,16 @@
           fontIcon="menu"
         ></mat-icon>
       </button>
-      <span>Cursos<span class="font-semibold">App</span></span>
+      <span class="font-normal" *ngIf="user"
+        >Hola, <span class="font-medium">{{ user.firstName }}</span></span
+      >
     </div>
     <div>
-      <button (click)="logout()" mat-icon-button aria-label="logout icon">
+      <button
+        (click)="authService.logout()"
+        mat-icon-button
+        aria-label="logout icon"
+      >
         <mat-icon
           aria-hidden="false"
           aria-label="Logout icon"

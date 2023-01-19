@@ -26,10 +26,10 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.isLogged().pipe(
-      tap((isLogged) => {
-        if (!isLogged) {
-          this.router.navigate(['/auth/login']);
+    return this.authService.verifyToken().pipe(
+      tap((isAuth) => {
+        if (!isAuth) {
+          this.router.navigate(['auth', 'login']);
         }
       })
     );

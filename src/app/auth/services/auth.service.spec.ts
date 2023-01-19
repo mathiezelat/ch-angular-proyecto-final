@@ -6,8 +6,9 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { User } from './../../core/models/user';
+import { SingleUserResponse } from '../../core/models/reqres.interface';
 
-const expectedUser = new User(
+const mockUser: User = new User(
   7,
   'michael.lawson@reqres.in',
   'Michael',
@@ -15,7 +16,21 @@ const expectedUser = new User(
   'https://reqres.in/img/faces/7-image.jpg'
 );
 
-xdescribe('AuthService', () => {
+const mockSingleUserResponse: SingleUserResponse = {
+  data: {
+    id: 7,
+    email: 'michael.lawson@reqres.in',
+    first_name: 'Michael',
+    last_name: 'Lawson',
+    avatar: 'https://reqres.in/img/faces/7-image.jpg',
+  },
+  support: {
+    url: 'https://reqres.in/#support-heading',
+    text: 'To keep ReqRes free, contributions towards server costs are appreciated!',
+  },
+};
+
+describe('AuthService', () => {
   let service: AuthService;
   let httpTestingController: HttpTestingController;
 
@@ -34,11 +49,11 @@ xdescribe('AuthService', () => {
   it('login should work', (done) => {
     service
       .login({
-        email: 'eve.holt@reqres.in',
-        password: 'cityslicka',
+        email: 'fakemail@mail.com',
+        password: '123456',
       })
       .subscribe((user) => {
-        expect(user).toEqual(expectedUser);
+        expect(user).toEqual(mockUser);
         done();
       });
 
@@ -56,18 +71,6 @@ xdescribe('AuthService', () => {
         url: `${service.apiUrl}/users/7`,
         method: 'GET',
       })
-      .flush({
-        data: {
-          id: 7,
-          email: 'michael.lawson@reqres.in',
-          first_name: 'Michael',
-          last_name: 'Lawson',
-          avatar: 'https://reqres.in/img/faces/7-image.jpg',
-        },
-        support: {
-          url: 'https://reqres.in/#support-heading',
-          text: 'To keep ReqRes free, contributions towards server costs are appreciated!',
-        },
-      });
+      .flush(mockSingleUserResponse);
   });
 });

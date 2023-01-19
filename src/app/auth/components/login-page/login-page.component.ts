@@ -19,13 +19,7 @@ export class LoginPageComponent {
   constructor(
     private readonly authService: AuthService,
     public readonly router: Router
-  ) {
-    this.authService.isLogged().subscribe((isLogged) => {
-      if (isLogged) {
-        router.navigate(['/dashboard/students']);
-      }
-    });
-  }
+  ) {}
 
   loginForm = new FormGroup({
     email: this.emailControl,
@@ -34,6 +28,7 @@ export class LoginPageComponent {
 
   login() {
     this.loginForm.markAllAsTouched();
+
     if (this.loginForm.valid) {
       this.loading = true;
 
@@ -49,8 +44,6 @@ export class LoginPageComponent {
             this.router.navigate(['dashboard', 'students']);
           }
         });
-
-      this.loginForm.reset();
     }
   }
 }

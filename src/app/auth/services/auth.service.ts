@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, mergeMap, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
 import {
@@ -12,49 +20,20 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private token = new BehaviorSubject<string | null>(null);
-  public token$ = this.token.asObservable();
-
-  private profile = new BehaviorSubject<User | null>(null);
-  public profile$ = this.profile.asObservable();
+  private user = new BehaviorSubject<User | null>(null);
+  public user$ = this.user.asObservable();
 
   public apiUrl = 'https://reqres.in/api';
 
   constructor(
     private readonly http: HttpClient,
     private readonly router: Router
-  ) {
-    const token = localStorage.getItem('token');
+  ) {}
 
-    if (token) {
-      this.token.next(token);
-
-      this.http
-        .get<SingleUserResponse>(`${this.apiUrl}/users/7`)
-        .pipe(
-          map(
-            ({ data }) =>
-              new User(
-                data.id,
-                data.email,
-                data.first_name,
-                data.last_name,
-                data.avatar
-              )
-          )
-        )
-        .subscribe((user) => {
-          this.profile.next(user);
-        });
-    }
-  }
-
-  login(data: { email: string; password: string }): Observable<any> {
+  login(data: { email: string; password: string }): Observable<User> {
     return this.http.post<LoginSuccessful>(`${this.apiUrl}/login`, data).pipe(
       tap(({ token }) => {
         localStorage.setItem('token', token);
-
-        this.token.next(token);
       }),
       mergeMap(() =>
         this.http.get<SingleUserResponse>(`${this.apiUrl}/users/7`)
@@ -69,20 +48,47 @@ export class AuthService {
             data.avatar
           )
       ),
-      tap((user) => this.profile.next(user))
+      tap((user) => this.user.next(user))
+    );
+  }
+
+  verifyToken(): Observable<boolean> {
+    const lsToken = localStorage.getItem('token');
+
+    return of(lsToken).pipe(
+      tap((token) => {
+        if (!token) throw new Error('Token not exists');
+      }),
+      mergeMap(() => {
+        return this.http.get<SingleUserResponse>(`${this.apiUrl}/users/7`);
+      }),
+      map(
+        ({ data }) =>
+          new User(
+            data.id,
+            data.email,
+            data.first_name,
+            data.last_name,
+            data.avatar
+          )
+      ),
+      tap((user) => {
+        this.user.next(user);
+      }),
+      map((user) => {
+        return !!user;
+      }),
+      catchError(() => {
+        return of(false);
+      })
     );
   }
 
   logout() {
     localStorage.removeItem('token');
 
-    this.token.next(null);
-    this.profile.next(null);
+    this.user.next(null);
 
     this.router.navigate(['auth', 'login']);
-  }
-
-  isLogged() {
-    return this.token.pipe(map((token) => !!token));
   }
 }

@@ -33,7 +33,7 @@ describe('LoginPageComponent', () => {
   });
 
   it('should log in', () => {
-    component.loginForm.patchValue({
+    component.loginForm.setValue({
       email: 'eve.holt@reqres.in',
       password: 'cityslicka',
     });
@@ -44,6 +44,17 @@ describe('LoginPageComponent', () => {
       email: 'eve.holt@reqres.in',
       password: 'cityslicka',
     });
+  });
+
+  it('form should not be valid if email and password are empty', () => {
+    const loginForm = component.loginForm;
+
+    loginForm.setValue({
+      email: '',
+      password: '',
+    });
+
+    expect(loginForm.valid).toBe(false);
   });
 
   it('should not be able to log in if the form is invalid', () => {
@@ -60,5 +71,18 @@ describe('LoginPageComponent', () => {
       email: '',
       password: '',
     });
+  });
+
+  it('should call login from AuthService', () => {
+    const loginForm = component.loginForm;
+
+    loginForm.setValue({
+      email: 'test@email.com',
+      password: '123456',
+    });
+
+    component.login();
+
+    expect(loginSpy).toHaveBeenCalled();
   });
 });
