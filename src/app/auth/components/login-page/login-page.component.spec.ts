@@ -33,7 +33,9 @@ describe('LoginPageComponent', () => {
   });
 
   it('should log in', () => {
-    component.loginForm.setValue({
+    const loginForm = component.loginForm;
+
+    loginForm.setValue({
       email: 'eve.holt@reqres.in',
       password: 'cityslicka',
     });
