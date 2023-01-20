@@ -38,14 +38,18 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: 'eve.holt@reqres.in',
       password: 'cityslicka',
+      isAdmin: false,
     });
 
     component.login();
 
-    expect(loginSpy).toHaveBeenCalledWith({
-      email: 'eve.holt@reqres.in',
-      password: 'cityslicka',
-    });
+    expect(loginSpy).toHaveBeenCalledWith(
+      {
+        email: 'eve.holt@reqres.in',
+        password: 'cityslicka',
+      },
+      false
+    );
   });
 
   it('form should not be valid if email and password are empty', () => {
@@ -54,6 +58,7 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: '',
       password: '',
+      isAdmin: true,
     });
 
     expect(loginForm.valid).toBe(false);
@@ -63,6 +68,7 @@ describe('LoginPageComponent', () => {
     component.loginForm.patchValue({
       email: '',
       password: '',
+      isAdmin: false,
     });
 
     expect(component.loginForm.invalid).toBeTrue();
@@ -72,6 +78,7 @@ describe('LoginPageComponent', () => {
     expect(loginSpy).not.toHaveBeenCalledWith({
       email: '',
       password: '',
+      isAdmin: false,
     });
   });
 
@@ -81,6 +88,7 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: 'test@email.com',
       password: '123456',
+      isAdmin: true,
     });
 
     component.login();
