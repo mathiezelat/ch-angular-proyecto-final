@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Course } from '../../../core/models';
+import { Course } from '../models/course.model';
 import { environment } from './../../../../environments/environment';
 
 @Injectable({

@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppStoreModule } from './app-store.module';
+import { CoursesModule } from './dashboard/courses/courses.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { AppStoreModule } from './app-store.module';
     BrowserAnimationsModule,
     HttpClientModule,
     AppStoreModule,
+    CoursesModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
