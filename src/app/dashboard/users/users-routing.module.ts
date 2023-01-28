@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersPageComponent } from './pages/users-page/users-page.component';
 
@@ -10,7 +11,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  declarations: [],
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
 export class UsersRoutingModule {}

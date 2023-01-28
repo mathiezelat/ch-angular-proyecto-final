@@ -12,18 +12,8 @@ export interface IUser {
 
 export interface SingleUserResponse {
   data: IUser;
-  support: Support;
-}
-
-export interface UsersResponse {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: IUser[];
-  support: Support;
-}
-export interface Support {
-  url: string;
-  text: string;
+  support: {
+    url: string;
+    text: string;
+  };
 }

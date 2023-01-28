@@ -5,16 +5,15 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { User } from './../../core/models/user';
 import { SingleUserResponse } from '../../core/models/reqres.interface';
+import { User } from '../../dashboard/users/models/user.model';
 
 const mockUser: User = new User(
   7,
   'michael.lawson@reqres.in',
   'Michael',
   'Lawson',
-  'https://reqres.in/img/faces/7-image.jpg',
-  true
+  'https://reqres.in/img/faces/7-image.jpg'
 );
 
 const mockSingleUserResponse: SingleUserResponse = {

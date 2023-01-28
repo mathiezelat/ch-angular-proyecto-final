@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
-
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -26,11 +25,9 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.verifyToken().pipe(
-      tap((isAuth) => {
-        if (!isAuth) {
-          this.router.navigate(['auth', 'login']);
-        }
+    return this.authService.isAuthenticated$.pipe(
+      tap((isAuthenticated) => {
+        if (!isAuthenticated) this.router.navigate(['auth', 'login']);
       })
     );
   }

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../auth/services/auth.service';
-import { User } from '../core/models/user';
+import { Store } from '@ngrx/store';
+import { AppState } from '../core/models/app-state.model';
+import { authenticatedUserSelector } from '../auth/store/auth.selectors';
+import { User } from './users/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,11 +14,12 @@ export class DashboardComponent {
 
   private destroyed$ = new Subject();
 
-  constructor(public readonly authService: AuthService) {
-    this.authService.user$
+  constructor(private readonly store: Store<AppState>) {
+    this.store
+      .select(authenticatedUserSelector)
       .pipe(takeUntil(this.destroyed$))
       .subscribe((user) => {
-        if (user) this.user = user;
+        this.user = user;
       });
   }
   ngOnDestroy(): void {

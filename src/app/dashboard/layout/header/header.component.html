@@ -8,13 +8,14 @@
           fontIcon="menu"
         ></mat-icon>
       </button>
-      <span class="font-normal" *ngIf="user"
-        >Hola, <span class="font-medium">{{ user.firstName }}</span></span
-      >
+      <span class="font-normal" *ngIf="user | async">
+        Hola,
+        <span class="font-medium">{{ (user | async)?.first_name }} </span>
+      </span>
     </div>
     <div>
       <button
-        (click)="authService.logout()"
+        (click)="authService.logOut()"
         mat-icon-button
         aria-label="logout icon"
       >
