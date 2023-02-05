@@ -6,28 +6,33 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { Observable, tap, of, map, catchError } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectAuthState } from '../store/auth.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router
-  ) {}
+  constructor(private readonly router: Router, private readonly store: Store) {}
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    routerState: RouterStateSnapshot
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.isAuthenticated$.pipe(
-      tap((isAuthenticated) => {
-        if (!isAuthenticated) this.router.navigate(['auth', 'login']);
+    return this.store.select(selectAuthState).pipe(
+      map((state) => {
+        if (!state.authenticatedUser) {
+          this.router.navigate(['auth', 'login']);
+        }
+
+        return !!state.authenticatedUser;
+      }),
+      catchError(() => {
+        return of(false);
       })
     );
   }

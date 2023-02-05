@@ -1,70 +1,83 @@
 import { createReducer, on } from '@ngrx/store';
-import {
-  logOut,
-  login,
-  loginFailure,
-  loginSuccess,
-  updateAuthenticatedUser,
-  verifyToken,
-  verifyTokenFailure,
-  verifyTokenSuccess,
-} from './auth.actions';
+import * as AuthActions from './auth.actions';
 import { User } from 'src/app/dashboard/users/models/user.model';
 
 export const authFeatureKey = 'auth';
 
-export interface AuthState {
+export interface State {
   authenticatedUser: User | null;
-  loggingIn: boolean;
+  loading: boolean;
   error: unknown;
 }
 
-const initialState: AuthState = {
+const initialState: State = {
   authenticatedUser: null,
-  loggingIn: false,
+  loading: false,
   error: null,
 };
 
-export const authReducer = createReducer(
+export const reducer = createReducer(
   initialState,
-  on(login, (state) => ({ ...state, loggingIn: true })),
-  on(loginSuccess, (state, { authenticatedUser }) => ({
+  on(AuthActions.login, (state) => ({
     ...state,
-    authenticatedUser,
-    loggingIn: false,
+    loading: true,
   })),
-  on(loginFailure, (state, { error }) => ({
+  on(AuthActions.loginSuccess, (state, action) => ({
     ...state,
-    loggingIn: false,
-    error,
+    authenticatedUser: action.authenticatedUser,
+    loading: false,
   })),
-
-  on(verifyToken, (state) => ({ ...state, loggingIn: true })),
-  on(verifyTokenSuccess, (state, { authenticatedUser }) => ({
+  on(AuthActions.loginFailure, (state, action) => ({
     ...state,
-    authenticatedUser,
-    loggingIn: false,
+    error: action.error,
   })),
-  on(verifyTokenFailure, (state, { error }) => ({
+  on(AuthActions.register, (state) => ({
     ...state,
-    loggingIn: false,
-    error,
+    loading: true,
   })),
-  on(logOut, () => {
-    localStorage.removeItem('token');
-    return initialState;
-  }),
-  on(updateAuthenticatedUser, (oldState, payload) => {
-    if (!oldState.authenticatedUser) return oldState;
-    return {
-      ...oldState,
-      authenticatedUser: new User(
-        oldState.authenticatedUser.id,
-        oldState.authenticatedUser.email,
-        payload.first_name || oldState.authenticatedUser.first_name,
-        payload.last_name || oldState.authenticatedUser.last_name,
-        oldState.authenticatedUser.avatar
-      ),
-    };
-  })
+  on(AuthActions.registerSuccess, (state, action) => ({
+    ...state,
+    authenticatedUser: action.authenticatedUser,
+    loading: false,
+  })),
+  on(AuthActions.registerFailure, (state, action) => ({
+    ...state,
+    error: action.error,
+  })),
+  on(AuthActions.update, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(AuthActions.updateSuccess, (state, action) => ({
+    ...state,
+    authenticatedUser: action.authenticatedUser,
+    loading: false,
+  })),
+  on(AuthActions.updateFailure, (state, action) => ({
+    ...state,
+    error: action.error,
+  })),
+  on(AuthActions.authStateChanged, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(AuthActions.authStateChangedSuccess, (state, action) => ({
+    ...state,
+    authenticatedUser: action.authenticatedUser,
+    loading: false,
+  })),
+  on(AuthActions.authStateChangedFailure, (state, action) => ({
+    ...state,
+    error: action.error,
+  })),
+  on(AuthActions.logOut, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(AuthActions.logOutSuccess, () => initialState),
+  on(AuthActions.logOutFailure, (state, action) => ({
+    ...initialState,
+    loading: false,
+    error: action.error,
+  }))
 );

@@ -1,0 +1,29 @@
+<div
+  *ngIf="loading; else elseTemplate"
+  class="h-full flex justify-center items-center"
+>
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #elseTemplate>
+  <div class="flex justify-center items-center gap-2 mt-16">
+    <img
+      [src]="user?.avatar"
+      alt="avatar"
+      class="w-32 h-32 rounded-full object-cover"
+    />
+    <button (click)="editProfile()" mat-icon-button color="primary">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Edit icon"
+        fontIcon="edit"
+      ></mat-icon>
+    </button>
+    <div class="dark:text-gray-400">
+      <p class="text-xl leading-none">
+        {{ user?.firstName }} {{ user?.lastName }}
+      </p>
+      <p>{{ user?.email }}</p>
+    </div>
+  </div>
+</ng-template>

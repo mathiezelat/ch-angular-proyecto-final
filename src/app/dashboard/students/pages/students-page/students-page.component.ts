@@ -1,28 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentDialogComponent } from '../../components/student-dialog/student-dialog.component';
-import { StudentsService } from '../../services/students.service';
-import { Student } from './../../../../core/models/student.model';
+import { Store } from '@ngrx/store';
+import {
+  loadStudents,
+  resetStudentsState,
+  createStudent,
+} from '../../store/student.actions';
+import {
+  selectIsActiveStudentsArray,
+  selectLoadingStudents,
+} from '../../store/student.selectors';
+import { Student } from '../../models/student.model';
+import { updateStudent, deleteStudent } from '../../store/student.actions';
 
 @Component({
   selector: 'app-students-page',
   templateUrl: './students-page.component.html',
 })
-export class StudentsPageComponent {
+export class StudentsPageComponent implements OnInit, OnDestroy {
   displayedColumns = [
     'id',
     'firstName',
     'lastName',
     'dni',
     'isActive',
+    'viewDetail',
+    'viewCommissionHistory',
     'edit',
     'delete',
   ];
+  students: Student[] = [];
+  loading = true;
 
   constructor(
     private readonly dialogService: MatDialog,
-    public readonly studentsService: StudentsService
+    private readonly store: Store
   ) {}
+  ngOnDestroy(): void {
+    this.store.dispatch(resetStudentsState());
+  }
+  ngOnInit(): void {
+    this.store.dispatch(loadStudents());
+    this.store.select(selectIsActiveStudentsArray).subscribe((state) => {
+      this.students = state;
+    });
+    this.store.select(selectLoadingStudents).subscribe((state) => {
+      this.loading = state;
+    });
+  }
 
   addStudent() {
     const dialog = this.dialogService.open(StudentDialogComponent, {
@@ -31,10 +57,8 @@ export class StudentsPageComponent {
       },
     });
 
-    dialog.afterClosed().subscribe((value) => {
-      if (value) {
-        this.studentsService.addStudent(value);
-      }
+    dialog.afterClosed().subscribe((newStudent: Student) => {
+      newStudent && this.store.dispatch(createStudent({ data: newStudent }));
     });
   }
 
@@ -46,14 +70,15 @@ export class StudentsPageComponent {
       },
     });
 
-    dialog.afterClosed().subscribe((data) => {
-      if (data) {
-        this.studentsService.editStudent(student.id, data);
-      }
+    dialog.afterClosed().subscribe((editStudent: Student) => {
+      student &&
+        this.store.dispatch(
+          updateStudent({ data: { ...editStudent, id: student.id } })
+        );
     });
   }
 
   removeStudent(student: Student) {
-    this.studentsService.deleteStudent(student.id);
+    this.store.dispatch(deleteStudent({ data: student }));
   }
 }

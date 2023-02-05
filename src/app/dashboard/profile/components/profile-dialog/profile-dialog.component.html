@@ -1,0 +1,62 @@
+<h1
+  mat-dialog-title
+  appTitle
+  class="dark:text-gray-300 dark:bg-gray-800 m-0 pb-4"
+>
+  {{ title }}
+</h1>
+<div mat-dialog-content class="dark:text-gray-400 dark:bg-gray-800">
+  <form class="flex flex-col w-60 md:w-96 py-2" [formGroup]="profileForm">
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label class="dark:text-gray-400">Nombre</mat-label>
+        <input
+          [formControl]="firstNameControl"
+          matInput
+          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+        />
+        <mat-error *ngIf="firstNameControl.getError('required')">
+          Nombre es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label class="dark:text-gray-400">Apellido</mat-label>
+        <input
+          [formControl]="lastNameControl"
+          matInput
+          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+        />
+        <mat-error *ngIf="lastNameControl.getError('required')">
+          Apellido es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label class="dark:text-gray-400">Avatar</mat-label>
+        <input
+          [formControl]="avatarControl"
+          matInput
+          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+        />
+        <mat-error *ngIf="avatarControl.getError('required')">
+          Avatar es requerido
+        </mat-error>
+        <mat-error *ngIf="avatarControl.getError('pattern')">
+          Avatar tiene que ser una URL de una imagen
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div mat-dialog-actions class="flex justify-center -mt-4 pb-8 dark:bg-gray-800">
+  <button mat-button (click)="close()" class="dark:text-gray-300">
+    Cancelar
+  </button>
+  <button mat-flat-button color="primary" (click)="save()" cdkFocusInitial>
+    Guardar
+  </button>
+</div>

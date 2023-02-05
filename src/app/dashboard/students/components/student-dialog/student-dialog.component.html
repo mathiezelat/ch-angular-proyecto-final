@@ -60,7 +60,9 @@
     </div>
     <div *ngIf="isEdit">
       <mat-checkbox [formControl]="isActiveControl" color="primary">
-        ¿Está activo?
+        <span class="dark:text-gray-400 dark:placeholder:text-gray-500">
+          ¿Está activo?
+        </span>
       </mat-checkbox>
     </div>
   </form>

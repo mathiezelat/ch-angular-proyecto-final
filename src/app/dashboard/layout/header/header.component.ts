@@ -1,38 +1,43 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
-import { Subject, takeUntil, Observable } from 'rxjs';
-import { AuthService } from '../../../auth/services/auth.service';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../../core/models/app-state.model';
-import { authenticatedUserSelector } from '../../../auth/store/auth.selectors';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { logOut } from '../../../auth/store/auth.actions';
+import { selectAuthState } from '../../../auth/store/auth.selectors';
 import { User } from '../../users/models/user.model';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnDestroy {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Input() sidenav!: MatSidenav;
 
-  // public user: User | null = null;
+  public user: User | null = null;
+  private destroyed$ = new Subject();
 
-  public user: Observable<User | null>;
+  constructor(private readonly router: Router, private readonly store: Store) {}
 
-  // private destroyed$ = new Subject();
-
-  constructor(
-    public readonly authService: AuthService,
-    private readonly store: Store<AppState>
-  ) {
-    // this.authService.user$
-    //   .pipe(takeUntil(this.destroyed$))
-    //   .subscribe((user) => {
-    //     if (user) this.user = user;
-    //   });
-
-    this.user = this.store.select(authenticatedUserSelector);
-  }
   ngOnDestroy(): void {
-    // this.destroyed$.next(true);
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
+  ngOnInit(): void {
+    this.store
+      .select(selectAuthState)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((state) => {
+        if (!state.authenticatedUser) {
+          this.router.navigate(['auth', 'login']);
+        }
+
+        this.user = state.authenticatedUser;
+      });
+  }
+
+  logOut() {
+    this.store.dispatch(logOut());
   }
 }

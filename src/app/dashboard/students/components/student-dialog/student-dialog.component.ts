@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Student } from '../../../../core/models';
+import { Commission } from '../../../commissions/model/commission.model';
+import { Student } from '../../models/student.model';
 
 @Component({
   selector: 'app-student-dialog',
@@ -23,13 +24,15 @@ export class StudentDialogComponent {
     Validators.required,
     Validators.pattern('^[0-9]*$'),
   ]);
-  isActiveControl = new FormControl(true);
+  isActiveControl = new FormControl(true, [Validators.required]);
+  commissionsControl: FormControl<Commission[] | null> = new FormControl([]);
 
   studentForm = new FormGroup({
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
     dni: this.dniControl,
     isActive: this.isActiveControl,
+    commissions: this.commissionsControl,
   });
 
   constructor(

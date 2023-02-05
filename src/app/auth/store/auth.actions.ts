@@ -1,34 +1,56 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../dashboard/users/models/user.model';
+import { AuthUser } from '../models/auth.model';
 
 export const login = createAction(
-  '[AUTH] LOGIN',
-  props<{ email: string; password: string }>()
+  '[Auth] Login',
+  props<{ authUser: AuthUser }>()
 );
 export const loginSuccess = createAction(
-  '[AUTH] LOGIN SUCCESS',
+  '[Auth] Login Success',
   props<{ authenticatedUser: User }>()
 );
 export const loginFailure = createAction(
-  '[AUTH] LOGIN FAILURE',
+  '[Auth] Login Failure',
   props<{ error: unknown }>()
 );
 
-export const verifyToken = createAction(
-  '[AUTH] VERIFY TOKEN',
-  props<{ token: string }>()
+export const register = createAction(
+  '[Auth] Register',
+  props<{ authUser: AuthUser }>()
 );
-export const verifyTokenSuccess = createAction(
-  '[AUTH] VERIFY TOKEN SUCCESS',
+export const registerSuccess = createAction(
+  '[Auth] Register Success',
   props<{ authenticatedUser: User }>()
 );
-export const verifyTokenFailure = createAction(
-  '[AUTH] VERIFY TOKEN FAILURE',
+export const registerFailure = createAction(
+  '[Auth] Register Failure',
   props<{ error: unknown }>()
 );
 
-export const logOut = createAction('[AUTH] LOG OUT');
-export const updateAuthenticatedUser = createAction(
-  '[AUTH] UPDATE USER',
-  props<{ first_name: string; last_name: string }>()
+export const update = createAction('[Auth] Update', props<{ user: User }>());
+export const updateSuccess = createAction(
+  '[Auth] Update Success',
+  props<{ authenticatedUser: User }>()
+);
+export const updateFailure = createAction(
+  '[Auth] Update Failure',
+  props<{ error: unknown }>()
+);
+
+export const authStateChanged = createAction('[Auth] AuthStateChanged');
+export const authStateChangedSuccess = createAction(
+  '[Auth] AuthStateChanged Success',
+  props<{ authenticatedUser: User | null }>()
+);
+export const authStateChangedFailure = createAction(
+  '[Auth] AuthStateChanged Failure',
+  props<{ error: unknown }>()
+);
+
+export const logOut = createAction('[Auth] LogOut');
+export const logOutSuccess = createAction('[Auth] LogOut Success');
+export const logOutFailure = createAction(
+  '[Auth] LogOut Failure',
+  props<{ error: unknown }>()
 );

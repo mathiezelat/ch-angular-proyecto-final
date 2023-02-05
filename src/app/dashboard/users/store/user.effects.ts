@@ -1,59 +1,89 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap } from 'rxjs/operators';
-import { Observable, EMPTY, of } from 'rxjs';
+import { catchError, map, concatMap, switchMap, skip } from 'rxjs/operators';
+import { from, Observable, of, take } from 'rxjs';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  docData,
+  updateDoc,
+  doc,
+} from '@angular/fire/firestore';
+
 import * as UserActions from './user.actions';
 import { User } from '../models/user.model';
-
-export interface UsersListResponse {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: User[];
-  support: Support;
-}
-
-export interface Support {
-  url: string;
-  text: string;
-}
 
 @Injectable()
 export class UserEffects {
   loadUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(UserActions.loadUsers),
-      concatMap((action) =>
-        /** An EMPTY observable only emits completion. Replace with your own observable API request */
-        this.getUsersFromApi(action.page, action.per_page).pipe(
-          map((response) =>
-            UserActions.loadUsersSuccess({
-              data: response.data,
-              totalUsers: response.total,
-            })
-          ),
+      concatMap(() =>
+        this.getUsers().pipe(
+          skip(1),
+          take(1),
+          map((data) => UserActions.loadUsersSuccess({ data })),
           catchError((error) => of(UserActions.loadUsersFailure({ error })))
         )
       )
     );
   });
 
-  constructor(private actions$: Actions, private httpClient: HttpClient) {}
+  updateUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UserActions.updateUser),
+      concatMap((action) =>
+        this.updateUser(action.data).pipe(
+          take(1),
+          map((data) => UserActions.updateUserSuccess({ data })),
+          catchError((error) => of(UserActions.updateUserFailure({ error })))
+        )
+      )
+    );
+  });
 
-  private getUsersFromApi(
-    page: number,
-    per_page: number
-  ): Observable<UsersListResponse> {
-    return this.httpClient.get<UsersListResponse>(
-      'https://reqres.in/api/users',
-      {
-        params: {
-          page,
-          per_page,
-        },
-      }
+  deleteUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UserActions.deleteUser),
+      concatMap((action) =>
+        this.deleteUser(action.data).pipe(
+          take(1),
+          map((data) => UserActions.deleteUserSuccess({ data })),
+          catchError((error) => of(UserActions.deleteUserFailure({ error })))
+        )
+      )
+    );
+  });
+
+  constructor(
+    private actions$: Actions,
+    private readonly firestore: Firestore
+  ) {}
+
+  private getUsers(): Observable<User[]> {
+    const usersRef = collection(this.firestore, 'users');
+
+    return collectionData(usersRef, { idField: 'id' }) as Observable<User[]>;
+  }
+
+  private updateUser(user: User): Observable<User> {
+    const userDocRef = doc(this.firestore, `users/${user.id}`);
+
+    return from(updateDoc(userDocRef, { ...user })).pipe(
+      switchMap(() => {
+        return docData(userDocRef, { idField: 'id' }) as Observable<User>;
+      })
+    );
+  }
+
+  private deleteUser(user: User): Observable<User> {
+    const userDocRef = doc(this.firestore, `users/${user.id}`);
+
+    return from(updateDoc(userDocRef, { ...user, isActive: false })).pipe(
+      switchMap(() => {
+        return docData(userDocRef, { idField: 'id' }) as Observable<User>;
+      })
     );
   }
 }

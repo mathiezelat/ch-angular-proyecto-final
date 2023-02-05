@@ -52,5 +52,39 @@ export const reducer = createReducer(
     error: action.error,
   })),
 
+  on(CourseActions.updateCourse, (state) => ({ ...state, loading: true })),
+  on(CourseActions.updateCourseSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    data: state.data.map((course) => {
+      if (course.id === action.data.id) {
+        return { ...course, ...action.data };
+      }
+      return course;
+    }),
+  })),
+  on(CourseActions.updateCourseFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  })),
+
+  on(CourseActions.deleteCourse, (state) => ({ ...state, loading: true })),
+  on(CourseActions.deleteCourseSuccess, (state, action) => ({
+    ...state,
+    loading: false,
+    data: state.data.map((course) => {
+      if (course.id === action.data.id) {
+        return { ...course, ...action.data };
+      }
+      return course;
+    }),
+  })),
+  on(CourseActions.deleteCourseFailure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.error,
+  })),
+
   on(CourseActions.resetCoursesState, () => initialState)
 );

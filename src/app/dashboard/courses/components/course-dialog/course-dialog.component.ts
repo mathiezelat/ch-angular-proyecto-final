@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Course } from '../../models/course.model';
+import { Commission } from '../../../commissions/model/commission.model';
 
 @Component({
   selector: 'app-course-dialog',
@@ -13,18 +14,20 @@ export class CourseDialogComponent {
 
   titleControl = new FormControl('', [Validators.required]);
   categoryControl = new FormControl('', [Validators.required]);
-  durationControl = new FormControl('', [Validators.required]);
   priceControl = new FormControl(NaN, [
     Validators.required,
     Validators.pattern('^[0-9]*$'),
     Validators.min(1),
   ]);
+  isActiveControl = new FormControl(true, [Validators.required]);
+  commissionsControl: FormControl<Commission[] | null> = new FormControl([]);
 
   courseForm = new FormGroup({
     title: this.titleControl,
     category: this.categoryControl,
-    duration: this.durationControl,
     price: this.priceControl,
+    isActive: this.isActiveControl,
+    commissions: this.commissionsControl,
   });
 
   constructor(

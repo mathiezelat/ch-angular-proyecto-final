@@ -1,38 +1,66 @@
 import { createAction, props } from '@ngrx/store';
 import { Course } from '../models/course.model';
 
-// CARGAR CURSOS
 export const loadCourses = createAction('[Course] Load Courses');
 
-// CARGAR CURSOS EXITOSO
 export const loadCoursesSuccess = createAction(
   '[Course] Load Courses Success',
   props<{ data: Course[] }>()
 );
 
-// CARGAR CURSOS ERROR
 export const loadCoursesFailure = createAction(
   '[Course] Load Courses Failure',
   props<{ error: unknown }>()
 );
 
-// CREAR CURSO
 export const createCourse = createAction(
   '[Course] Create Course',
   props<{
-    data: { title: string; category: string; duration: string; price: number };
+    data: Course;
   }>()
 );
 
-// CREAR CURSO EXITOSO
 export const createCourseSuccess = createAction(
   '[Course] Create Course Success',
   props<{ data: Course }>()
 );
 
-// CREAR CURSO ERROR
 export const createCourseFailure = createAction(
   '[Course] Create Course Failure',
+  props<{ error: unknown }>()
+);
+
+export const updateCourse = createAction(
+  '[Course] Update Course',
+  props<{
+    data: Course;
+  }>()
+);
+
+export const updateCourseSuccess = createAction(
+  '[Course] Update Course Success',
+  props<{ data: Course }>()
+);
+
+export const updateCourseFailure = createAction(
+  '[Course] Update Course Failure',
+  props<{ error: unknown }>()
+);
+
+export const deleteCourse = createAction(
+  '[Course] Delete Course',
+  props<{
+    data: Course;
+  }>()
+);
+
+export const deleteCourseSuccess = createAction(
+  '[Course] Delete Course Success',
+  props<{ data: Course }>()
+);
+
+export const deleteCourseFailure = createAction(
+  '[Course] Delete Course Failure',
   props<{ error: unknown }>()
 );
 

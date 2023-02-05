@@ -10,6 +10,11 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
+        path: 'home',
+        loadChildren: () =>
+          import('./home/home.module').then((module) => module.HomeModule),
+      },
+      {
         path: 'students',
         loadChildren: () =>
           import('./students/students.module').then(
@@ -24,10 +29,10 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'inscriptions',
+        path: 'commissions',
         loadChildren: () =>
-          import('./inscriptions/inscriptions.module').then(
-            (module) => module.InscriptionsModule
+          import('./commissions/commissions.module').then(
+            (module) => module.CommissionsModule
           ),
       },
       {
@@ -36,8 +41,15 @@ const routes: Routes = [
           import('./users/users.module').then((module) => module.UsersModule),
       },
       {
+        path: 'profile',
+        loadChildren: () =>
+          import('./profile/profile.module').then(
+            (module) => module.ProfileModule
+          ),
+      },
+      {
         path: '**',
-        redirectTo: 'students',
+        redirectTo: 'home',
       },
     ],
   },

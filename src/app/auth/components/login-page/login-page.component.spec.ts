@@ -3,12 +3,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoginPageComponent } from './login-page.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthService } from '../../services/auth.service';
+// import { AuthService } from '../../services/auth.service';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
   let fixture: ComponentFixture<LoginPageComponent>;
-  let authService: AuthService;
+  // let authService: AuthService;
   let loginSpy: jasmine.Spy;
 
   beforeEach(async () => {
@@ -19,8 +19,8 @@ describe('LoginPageComponent', () => {
 
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;
-    authService = TestBed.inject(AuthService);
-    loginSpy = spyOn(authService, 'login').and.callThrough();
+    // authService = TestBed.inject(AuthService);
+    // loginSpy = spyOn(authService, 'login').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -38,7 +38,7 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: 'eve.holt@reqres.in',
       password: 'cityslicka',
-      isAdmin: false,
+      // isAdmin: false,
     });
 
     component.login();
@@ -58,7 +58,6 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: '',
       password: '',
-      isAdmin: true,
     });
 
     expect(loginForm.valid).toBe(false);
@@ -68,7 +67,6 @@ describe('LoginPageComponent', () => {
     component.loginForm.patchValue({
       email: '',
       password: '',
-      isAdmin: false,
     });
 
     expect(component.loginForm.invalid).toBeTrue();
@@ -88,7 +86,6 @@ describe('LoginPageComponent', () => {
     loginForm.setValue({
       email: 'test@email.com',
       password: '123456',
-      isAdmin: true,
     });
 
     component.login();

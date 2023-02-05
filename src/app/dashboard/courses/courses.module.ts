@@ -4,19 +4,16 @@ import { CoursesPageComponent } from './pages/courses-page/courses-page.componen
 import { CourseDialogComponent } from './components/course-dialog/course-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
 import { CoursesRoutingModule } from './courses-routing.module';
-import { EffectsModule } from '@ngrx/effects';
-import { CourseEffects } from './store/course.effects';
-import { StoreModule } from '@ngrx/store';
-import { courseFeatureKey, reducer } from './store/course.reducer';
+import { CourseDetailPageComponent } from './pages/course-detail-page/course-detail-page.component';
+import { ComissionsHistoryPageComponent } from './pages/comissions-history-page/comissions-history-page.component';
 
 @NgModule({
-  declarations: [CoursesPageComponent, CourseDialogComponent],
-  imports: [
-    CommonModule,
-    CoursesRoutingModule,
-    SharedModule,
-    StoreModule.forFeature(courseFeatureKey, reducer),
-    EffectsModule.forFeature([CourseEffects]),
+  declarations: [
+    CoursesPageComponent,
+    CourseDetailPageComponent,
+    ComissionsHistoryPageComponent,
+    CourseDialogComponent,
   ],
+  imports: [CommonModule, CoursesRoutingModule, SharedModule],
 })
 export class CoursesModule {}

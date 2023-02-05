@@ -5,12 +5,12 @@ export const selectUserState = createFeatureSelector<fromUser.State>(
   fromUser.userFeatureKey
 );
 
-export const selectUsersArray = createSelector(
+export const selectIsActiveUsersArray = createSelector(
   selectUserState,
-  (usersState) => usersState.data
+  (usersState) => usersState.data.filter((user) => user.isActive)
 );
 
-export const selectTotalUsersNumber = createSelector(
+export const selectLoadingUsers = createSelector(
   selectUserState,
-  (usersState) => usersState.totalUsers
+  (usersState) => usersState.loading
 );

@@ -35,20 +35,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="mb-2">
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label class="dark:text-gray-400">Duración</mat-label>
-        <input
-          [formControl]="durationControl"
-          matInput
-          placeholder="Ex. 8 semanas"
-          class="dark:text-gray-400 dark:placeholder:text-gray-500"
-        />
-        <mat-error *ngIf="durationControl.getError('required')">
-          Duración es requerida
-        </mat-error>
-      </mat-form-field>
-    </div>
     <div>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label class="dark:text-gray-400">Precio</mat-label>
@@ -57,8 +43,10 @@
           [formControl]="priceControl"
           matInput
           placeholder="Ex. 100"
-          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+          class="dark:text-gray-400 dark:placeholder:text-gray-500 text-right"
         />
+        <span matTextPrefix>$&nbsp;</span>
+        <span matTextSuffix>.00</span>
         <mat-error *ngIf="priceControl.getError('required')">
           Precio es requerido
         </mat-error>

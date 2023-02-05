@@ -3,7 +3,7 @@
 ></div>
 <div class="min-h-screen bg-gray-100 flex justify-center items-center">
   <div class="container mx-auto flex justify-center">
-    <mat-card class="w-80 h-96 overflow-hidden">
+    <mat-card class="w-80 overflow-hidden">
       <mat-card-header class="pb-4 mb-6 bg-gray-50 flex justify-center">
         <mat-card-title class="text-gray-700 font-normal">
           Inicio de sesión
@@ -14,32 +14,69 @@
           <div class="mb-2">
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Correo electrónico</mat-label>
-              <input [formControl]="emailControl" matInput />
+              <input [formControl]="emailControl" type="email" matInput />
+              <mat-icon matSuffix>email</mat-icon>
               <mat-error *ngIf="emailControl.getError('required')">
                 Correo electrónico es requerido
+              </mat-error>
+              <mat-error *ngIf="emailControl.getError('email')">
+                Correo electrónico tiene que ser válido
               </mat-error>
             </mat-form-field>
           </div>
           <div>
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Contraseña</mat-label>
-              <input [formControl]="passwordControl" type="password" matInput />
+              <input
+                [formControl]="passwordControl"
+                [type]="hide ? 'password' : 'text'"
+                matInput
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
               <mat-error *ngIf="passwordControl.getError('required')">
                 Contraseña es requerido
+              </mat-error>
+              <mat-error *ngIf="passwordControl.getError('minlength')">
+                Contraseña debe tener 7 o más caracteres
               </mat-error>
             </mat-form-field>
           </div>
         </form>
       </mat-card-content>
-      <mat-card-actions class="flex justify-center">
+      <mat-card-actions class="flex flex-col justify-center">
         <button
           mat-flat-button
           color="primary"
           (click)="login()"
-          class="w-full mx-2"
+          class="w-full mx-2 mb-5"
         >
           Iniciar sesión
         </button>
+        <div *ngIf="error" class="text-red-500">
+          <p *ngIf="error?.code === 'auth/user-not-found'">
+            Usuario no encontrado
+          </p>
+          <p *ngIf="error?.code === 'auth/wrong-password'">
+            Contraseña incorrecta
+          </p>
+          <p *ngIf="error?.code === 'auth/user-not-active'">
+            Usuario no activo
+          </p>
+        </div>
+        <div class="flex gap-1">
+          <p>¿No tenés una cuenta?</p>
+          <a routerLink="/auth/register" class="text-primary"> Regístrate </a>
+        </div>
       </mat-card-actions>
     </mat-card>
   </div>

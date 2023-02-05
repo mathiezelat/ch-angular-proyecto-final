@@ -1,14 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CoursesService } from '../../services/courses.service';
 import { CourseDialogComponent } from '../../components/course-dialog/course-dialog.component';
 import { Store } from '@ngrx/store';
 import {
   loadCourses,
   createCourse,
+  updateCourse,
+  deleteCourse,
   resetCoursesState,
 } from '../../store/course.actions';
-import { selectCourseState } from '../../store/course.selectors';
+import {
+  selectIsActiveCoursesArray,
+  selectLoadingCourses,
+} from '../../store/course.selectors';
 import { Course } from '../../models/course.model';
 
 @Component({
@@ -20,8 +24,9 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     'id',
     'title',
     'category',
-    'duration',
     'price',
+    'viewDetail',
+    'viewCommissionHistory',
     'edit',
     'delete',
   ];
@@ -30,7 +35,6 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly dialogService: MatDialog,
-    // public readonly coursesService: CoursesService,
     private readonly store: Store
   ) {}
   ngOnDestroy(): void {
@@ -39,9 +43,11 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.store.dispatch(loadCourses());
-    this.store.select(selectCourseState).subscribe((state) => {
-      this.courses = state.data;
-      this.loading = state.loading;
+    this.store.select(selectIsActiveCoursesArray).subscribe((state) => {
+      this.courses = state;
+    });
+    this.store.select(selectLoadingCourses).subscribe((state) => {
+      this.loading = state;
     });
   }
 
@@ -52,18 +58,9 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
       },
     });
 
-    dialog
-      .afterClosed()
-      .subscribe(
-        (newCourse: {
-          title: string;
-          category: string;
-          duration: string;
-          price: number;
-        }) => {
-          newCourse && this.store.dispatch(createCourse({ data: newCourse }));
-        }
-      );
+    dialog.afterClosed().subscribe((newCourse: Course) => {
+      newCourse && this.store.dispatch(createCourse({ data: newCourse }));
+    });
   }
 
   editCourse(course: Course) {
@@ -75,11 +72,14 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
     });
 
     dialog.afterClosed().subscribe((editCourse: Course) => {
-      // editCourse && this.coursesService.editCourse(course.id, editCourse);
+      editCourse &&
+        this.store.dispatch(
+          updateCourse({ data: { ...editCourse, id: course.id } })
+        );
     });
   }
 
-  deleteCourse(id: string) {
-    // this.coursesService.deleteCourse(id);
+  deleteCourse(course: Course) {
+    this.store.dispatch(deleteCourse({ data: course }));
   }
 }

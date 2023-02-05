@@ -1,7 +1,10 @@
+import { Commission } from '../../commissions/model/commission.model';
+
 export interface Course {
-  id: string;
+  id?: string;
   title: string;
   category: string;
-  duration: string;
   price: number;
+  isActive: boolean;
+  commissions: Commission[];
 }

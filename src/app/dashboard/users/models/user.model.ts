@@ -1,13 +1,11 @@
 export class User {
   constructor(
-    public id: number,
+    public id: string,
     public email: string,
-    public first_name: string,
-    public last_name: string,
-    public avatar: string
+    public firstName: string,
+    public lastName: string,
+    public avatar: string,
+    public isAdmin: boolean,
+    public isActive: boolean
   ) {}
-
-  get fullName() {
-    return this.first_name + ' ' + this.last_name;
-  }
 }

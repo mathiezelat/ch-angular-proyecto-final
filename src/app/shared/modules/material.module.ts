@@ -16,6 +16,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [],
@@ -31,11 +33,13 @@ import { MatMenuModule } from '@angular/material/menu';
     MatToolbarModule,
     MatSidenavModule,
     MatCheckboxModule,
+    MatNativeDateModule,
     MatDatepickerModule,
     MatSlideToggleModule,
     MatCardModule,
     MatSelectModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class MaterialModule {}

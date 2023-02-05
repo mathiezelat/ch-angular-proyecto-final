@@ -1,46 +1,77 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { filter, take } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
+import { login, authStateChanged, logOut } from '../../store/auth.actions';
+import { selectAuthState } from '../../store/auth.selectors';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit, OnDestroy {
+  private destroyed$ = new Subject();
   public loading = false;
-  public emailControl = new FormControl<string>('eve.holt@reqres.in', [
-    Validators.required,
-  ]);
-  public passwordControl = new FormControl<string>('cityslicka', [
-    Validators.required,
-  ]);
+  public hide = true;
+  public error: any = null;
 
-  constructor(
-    private readonly authService: AuthService,
-    public readonly router: Router
-  ) {}
+  public emailControl = new FormControl<string>('', [
+    Validators.required,
+    Validators.email,
+  ]);
+  public passwordControl = new FormControl<string>('', [
+    Validators.required,
+    Validators.minLength(7),
+  ]);
 
   loginForm = new FormGroup({
     email: this.emailControl,
     password: this.passwordControl,
   });
 
-  login() {
-    this.loading = true;
-    this.authService.login({
-      email: this.loginForm.get('email')?.value || '',
-      password: this.loginForm.get('password')?.value || '',
-    });
-    this.router.navigate(['dashboard', 'students']);
-    this.authService.isAuthenticated$
-      .pipe(filter((value) => value))
-      .pipe(take(1))
-      .subscribe((value) => {
-        if (value) {
-          this.router.navigate(['dashboard', 'students']);
+  constructor(private readonly store: Store, private readonly router: Router) {}
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(authStateChanged());
+
+    this.store
+      .select(selectAuthState)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((state) => {
+        this.loading = state.loading;
+
+        if (state.authenticatedUser) {
+          if (state.authenticatedUser.isActive) {
+            this.router.navigate(['dashboard', 'home']);
+          } else {
+            this.error = { code: 'auth/user-not-active' };
+          }
+        }
+
+        if (state.error) {
+          this.error = state.error;
         }
       });
+  }
+
+  login() {
+    this.loading = true;
+
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.valid) {
+      this.store.dispatch(
+        login({
+          authUser: {
+            email: this.loginForm.get('email')?.value || '',
+            password: this.loginForm.get('password')?.value || '',
+          },
+        })
+      );
+    }
   }
 }

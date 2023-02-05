@@ -8,17 +8,17 @@
           fontIcon="menu"
         ></mat-icon>
       </button>
-      <span class="font-normal" *ngIf="user | async">
-        Hola,
-        <span class="font-medium">{{ (user | async)?.first_name }} </span>
-      </span>
+      <span class="hidden sm:block"> CoursesApp </span>
+      <span class="block sm:hidden"> CA </span>
     </div>
     <div>
-      <button
-        (click)="authService.logOut()"
-        mat-icon-button
-        aria-label="logout icon"
-      >
+      <a mat-icon-button routerLink="home">
+        <mat-icon>home</mat-icon>
+      </a>
+      <a mat-icon-button routerLink="/dashboard/profile">
+        <mat-icon>account_circle</mat-icon>
+      </a>
+      <button (click)="logOut()" mat-icon-button aria-label="logout icon">
         <mat-icon
           aria-hidden="false"
           aria-label="Logout icon"

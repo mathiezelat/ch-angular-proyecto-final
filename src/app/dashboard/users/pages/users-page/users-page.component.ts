@@ -1,47 +1,77 @@
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from '../../models/user.model';
-import { loadUsers } from '../../store/user.actions';
 import {
-  selectUsersArray,
-  selectTotalUsersNumber,
+  deleteUser,
+  loadUsers,
+  resetUsersState,
+  updateUser,
+} from '../../store/user.actions';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  selectIsActiveUsersArray,
+  selectLoadingUsers,
 } from '../../store/user.selectors';
-import { Observable } from 'rxjs';
+import { UserDialogComponent } from '../../components/user-dialog/user-dialog.component';
+import { selectAuthUser } from '../../../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-users-page',
   templateUrl: './users-page.component.html',
-  styleUrls: ['./users-page.component.css'],
 })
-export class UsersPageComponent implements OnInit {
+export class UsersPageComponent implements OnInit, OnDestroy {
   public displayedColumns = [
     'id',
     'avatar',
-    'first_name',
-    'last_name',
+    'firstName',
+    'lastName',
     'email',
+    'viewDetail',
   ];
   public users: User[] = [];
-  public totalUsers: Observable<number>;
-  public perPage = 6;
-  public perPageOptions = [3, 6, 12, 18];
+  public loading = false;
+  public isAdmin: boolean = false;
 
-  constructor(private store: Store) {
-    this.totalUsers = this.store.select(selectTotalUsersNumber);
+  constructor(
+    private readonly dialogService: MatDialog,
+    private readonly store: Store
+  ) {}
+
+  ngOnDestroy(): void {
+    this.store.dispatch(resetUsersState());
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadUsers({ page: 1, per_page: this.perPage }));
-
-    this.store.select(selectUsersArray).subscribe((users) => {
-      this.users = users;
+    this.store.dispatch(loadUsers());
+    this.store.select(selectIsActiveUsersArray).subscribe((state) => {
+      this.users = state;
+    });
+    this.store.select(selectLoadingUsers).subscribe((state) => {
+      this.loading = state;
+    });
+    this.store.select(selectAuthUser).subscribe((state) => {
+      if (state?.isAdmin) {
+        this.isAdmin = true;
+        this.displayedColumns = [...this.displayedColumns, 'edit', 'delete'];
+      }
     });
   }
 
-  onPageChange(e: PageEvent) {
-    this.store.dispatch(
-      loadUsers({ page: e.pageIndex + 1, per_page: e.pageSize })
-    );
+  editUser(user: User) {
+    const dialog = this.dialogService.open(UserDialogComponent, {
+      data: {
+        title: 'Modificar usuario',
+        user,
+      },
+    });
+
+    dialog.afterClosed().subscribe((editUser: User) => {
+      editUser &&
+        this.store.dispatch(updateUser({ data: { ...editUser, id: user.id } }));
+    });
+  }
+
+  removeUser(user: User) {
+    this.store.dispatch(deleteUser({ data: user }));
   }
 }

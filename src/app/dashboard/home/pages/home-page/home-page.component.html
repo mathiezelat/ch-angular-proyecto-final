@@ -1,0 +1,55 @@
+<div class="flex flex-col justify-center items-center">
+  <div class="mt-20">
+    <p class="text-4xl dark:text-gray-400">Bienvenido, {{ user?.firstName }}</p>
+  </div>
+  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5">
+    <li>
+      <a
+        mat-flat-button
+        extended
+        color="primary"
+        routerLink="/dashboard/students"
+        class="w-full"
+      >
+        <mat-icon>assignment_ind</mat-icon>
+        Lista de alumnos
+      </a>
+    </li>
+    <li>
+      <a
+        mat-flat-button
+        extended
+        color="primary"
+        routerLink="/dashboard/courses"
+        class="w-full"
+      >
+        <mat-icon>library_books</mat-icon>
+        Lista de cursos
+      </a>
+    </li>
+    <li>
+      <a
+        mat-flat-button
+        extended
+        color="primary"
+        routerLink="/dashboard/commissions"
+        class="w-full"
+      >
+        <mat-icon>assignment</mat-icon>
+        Lista de comisiones
+      </a>
+    </li>
+    <li>
+      <a
+        mat-flat-button
+        extended
+        color="primary"
+        routerLink="/dashboard/users"
+        class="w-full"
+      >
+        <mat-icon>group</mat-icon>
+        Lista de usuarios
+      </a>
+    </li>
+  </ul>
+</div>

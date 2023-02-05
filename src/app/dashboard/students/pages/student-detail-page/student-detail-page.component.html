@@ -1,0 +1,21 @@
+<div
+  *ngIf="loading; else elseTemplate"
+  class="h-full flex justify-center items-center"
+>
+  <mat-spinner></mat-spinner>
+</div>
+
+<ng-template #elseTemplate>
+  <a mat-icon-button color="primary" routerLink="/dashboard/students">
+    <mat-icon>arrow_back</mat-icon>
+  </a>
+  <div class="flex justify-center items-center gap-8">
+    <div class="dark:text-gray-400">
+      <p class="text-xl leading-none">Alumno {{ student?.id }}</p>
+      <p>Nombre {{ student?.firstName }}</p>
+      <p>Apellido {{ student?.lastName }}</p>
+      <p>DNI {{ student?.dni }}</p>
+      <p>Historial de {{ student?.commissions?.length }} comisiones</p>
+    </div>
+  </div>
+</ng-template>

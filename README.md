@@ -1,4 +1,6 @@
-# ProyectoFinalAngular
+# Proyecto Final CH - CoursesApp
+
+It's a simple course management site inspired by other sites.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
 
