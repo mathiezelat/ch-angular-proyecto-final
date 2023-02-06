@@ -3,8 +3,9 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, takeUntil } from 'rxjs';
-import { login, authStateChanged, logOut } from '../../store/auth.actions';
+import { login, authStateChanged } from '../../store/auth.actions';
 import { selectAuthState } from '../../store/auth.selectors';
+import { User } from '../../../dashboard/users/models/user.model';
 
 @Component({
   selector: 'app-login-page',

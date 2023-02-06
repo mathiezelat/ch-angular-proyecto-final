@@ -10,7 +10,7 @@ export interface State {
   error: unknown;
 }
 
-const initialState: State = {
+export const initialState: State = {
   authenticatedUser: null,
   loading: false,
   error: null,
