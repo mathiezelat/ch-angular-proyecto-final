@@ -31,7 +31,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     password: this.passwordControl,
   });
 
-  constructor(private readonly store: Store, private readonly router: Router) {}
+  constructor(private readonly store: Store, public readonly router: Router) {}
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
