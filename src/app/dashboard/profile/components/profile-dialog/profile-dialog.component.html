@@ -35,6 +35,29 @@
     </div>
     <div class="mb-2">
       <mat-form-field appearance="outline" class="w-full">
+        <mat-label class="dark:text-gray-400">Dirección</mat-label>
+        <input
+          [formControl]="addressControl"
+          matInput
+          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+        />
+        <mat-error *ngIf="addressControl.getError('required')">
+          Dirección es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Número de teléfono</mat-label>
+        <input [formControl]="phoneControl" type="tel" matInput />
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error *ngIf="phoneControl.getError('required')">
+          Número de teléfono es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label class="dark:text-gray-400">Avatar</mat-label>
         <input
           [formControl]="avatarControl"

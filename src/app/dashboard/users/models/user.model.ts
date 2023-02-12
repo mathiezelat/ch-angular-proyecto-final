@@ -4,6 +4,8 @@ export class User {
     public email: string,
     public firstName: string,
     public lastName: string,
+    public address: string,
+    public phone: string,
     public avatar: string,
     public isAdmin: boolean,
     public isActive: boolean

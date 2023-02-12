@@ -15,6 +15,8 @@ export class ProfileDialogComponent {
   emailControl = new FormControl('', [Validators.required, Validators.email]);
   firstNameControl = new FormControl('', [Validators.required]);
   lastNameControl = new FormControl('', [Validators.required]);
+  addressControl = new FormControl('', [Validators.required]);
+  phoneControl = new FormControl('', [Validators.required]);
   avatarControl = new FormControl('', [
     Validators.required,
     Validators.pattern(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/),
@@ -26,6 +28,8 @@ export class ProfileDialogComponent {
     email: this.emailControl,
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
+    address: this.addressControl,
+    phone: this.phoneControl,
     avatar: this.avatarControl,
     isAdmin: this.isAdminControl,
     isActive: this.isActiveControl,

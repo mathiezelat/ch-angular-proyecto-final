@@ -14,6 +14,8 @@ export class UserDialogComponent {
   emailControl = new FormControl('', [Validators.required, Validators.email]);
   firstNameControl = new FormControl('', [Validators.required]);
   lastNameControl = new FormControl('', [Validators.required]);
+  addressControl = new FormControl('', [Validators.required]);
+  phoneControl = new FormControl('', [Validators.required]);
   avatarControl = new FormControl('', [Validators.required]);
   isAdminControl = new FormControl(false, [Validators.required]);
   isActiveControl = new FormControl(true, [Validators.required]);
@@ -22,6 +24,8 @@ export class UserDialogComponent {
     email: this.emailControl,
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
+    address: this.addressControl,
+    phone: this.phoneControl,
     avatar: this.avatarControl,
     isAdmin: this.isAdminControl,
     isActive: this.isActiveControl,

@@ -138,6 +138,8 @@ export class AuthEffects {
           email: authUser.email,
           firstName: authUser.firstName || 'USER_FIRSTNAME',
           lastName: authUser.lastName || 'USER_LASTNAME',
+          address: authUser.address || 'USER_ADDRESS',
+          phone: authUser.phone || 'USER_PHONE',
           avatar:
             authUser.avatar ||
             'https://static.thenounproject.com/png/5034901-200.png',

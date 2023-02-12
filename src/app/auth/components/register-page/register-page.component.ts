@@ -26,6 +26,8 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
   ]);
   public firstNameControl = new FormControl<string>('', [Validators.required]);
   public lastNameControl = new FormControl<string>('', [Validators.required]);
+  public addressControl = new FormControl<string>('', [Validators.required]);
+  public phoneControl = new FormControl<string>('', [Validators.required]);
   public avatarControl = new FormControl<string>('', [
     Validators.required,
     Validators.pattern(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/),
@@ -36,6 +38,8 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     password: this.passwordControl,
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
+    address: this.addressControl,
+    phone: this.phoneControl,
     avatar: this.avatarControl,
   });
 
@@ -76,6 +80,8 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
             password: this.registerForm.get('password')?.value || '',
             firstName: this.registerForm.get('firstName')?.value || '',
             lastName: this.registerForm.get('lastName')?.value || '',
+            address: this.registerForm.get('address')?.value || '',
+            phone: this.registerForm.get('phone')?.value || '',
             avatar: this.registerForm.get('avatar')?.value || '',
           },
         })

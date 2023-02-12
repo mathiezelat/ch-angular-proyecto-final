@@ -25,6 +25,8 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     'avatar',
     'firstName',
     'lastName',
+    'address',
+    'phone',
     'email',
     'viewDetail',
   ];
