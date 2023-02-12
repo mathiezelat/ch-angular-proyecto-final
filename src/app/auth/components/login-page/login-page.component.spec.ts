@@ -90,7 +90,7 @@ describe('LoginPageComponent', () => {
     expect(component.loading).toBeTrue();
     expect(component.error).toBeNull();
 
-    store.select(selectAuthState).subscribe((state) => {
+    store.select(selectAuthState).subscribe((state: any) => {
       expect(state.authenticatedUser).toEqual(mockAuthUser);
       expect(state.loading).toBeFalse();
       expect(state.error).toBeNull();
@@ -144,7 +144,7 @@ describe('LoginPageComponent', () => {
 
     component.login();
 
-    store.select(selectAuthState).subscribe((state) => {
+    store.select(selectAuthState).subscribe((state: any) => {
       expect(state.authenticatedUser).toEqual(mockAuthUser);
 
       done();

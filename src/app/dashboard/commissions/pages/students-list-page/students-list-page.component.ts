@@ -16,7 +16,7 @@ import {
   templateUrl: './students-list-page.component.html',
 })
 export class StudentsListPageComponent implements OnInit, OnDestroy {
-  displayedColumns = ['id', 'firstName', 'lastName', 'dni', 'isActive'];
+  displayedColumns = ['id', 'firstName', 'lastName', 'dni'];
 
   students: Student[] = [];
   loading = true;

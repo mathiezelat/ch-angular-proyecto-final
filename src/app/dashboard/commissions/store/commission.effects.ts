@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, concatMap, switchMap } from 'rxjs/operators';
-import { Observable, EMPTY, of, take, from } from 'rxjs';
+import { Observable, of, take, from } from 'rxjs';
 import {
   Firestore,
   collection,

@@ -23,6 +23,7 @@ export class StudentsPageComponent implements OnInit, OnDestroy {
     'id',
     'firstName',
     'lastName',
+    'profile',
     'dni',
     'isActive',
     'viewDetail',

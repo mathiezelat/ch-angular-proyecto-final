@@ -43,6 +43,20 @@
     </div>
     <div class="mb-2">
       <mat-form-field appearance="outline" class="w-full">
+        <mat-label class="dark:text-gray-400">Perfíl</mat-label>
+        <input
+          [formControl]="profileControl"
+          matInput
+          placeholder="Ex. Programador"
+          class="dark:text-gray-400 dark:placeholder:text-gray-500"
+        />
+        <mat-error *ngIf="profileControl.getError('required')">
+          Perfíl es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="mb-2">
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label class="dark:text-gray-400">DNI</mat-label>
         <input
           [formControl]="dniControl"

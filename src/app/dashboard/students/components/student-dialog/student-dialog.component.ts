@@ -20,6 +20,7 @@ export class StudentDialogComponent {
     Validators.required,
     Validators.minLength(2),
   ]);
+  profileControl = new FormControl('', [Validators.required]);
   dniControl = new FormControl('', [
     Validators.required,
     Validators.pattern('^[0-9]*$'),
@@ -30,6 +31,7 @@ export class StudentDialogComponent {
   studentForm = new FormGroup({
     firstName: this.firstNameControl,
     lastName: this.lastNameControl,
+    profile: this.profileControl,
     dni: this.dniControl,
     isActive: this.isActiveControl,
     commissions: this.commissionsControl,
