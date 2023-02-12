@@ -19,6 +19,8 @@ const mockAuthUser: AuthUser = {
   password: '1234567',
   firstName: 'Test',
   lastName: 'One',
+  address: 'Av. Siempre viva',
+  phone: '4564564564',
   avatar: 'avatar',
   isAdmin: true,
   isActive: true,
